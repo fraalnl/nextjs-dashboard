@@ -29,7 +29,12 @@ In the project:
 
 `Config Files`: config files such as next.config.js at the root of your application. 
 
-By using `TypeScript`, you can ensure you don't accidentally pass the wrong data format to your components or database, like passing a string instead of a number to invoice amount.
+`TypeScript`
+- JavaScript is the core language of the web, and TypeScript is built upon it. Any valid JavaScript code is also valid TypeScript code.
+- TypeScript adds features: static typing, classes, interfaces
+- Static Typing: TypeScript lets you define the types of your variables and functions (e.g., number, string, boolean). This helps catch errors during development and makes your code more readable. JavaScript is dynamically typed, meaning it doesn't require you to specify types explicitly.
+- Classes and Interfaces: TypeScript supports classes and interfaces, which provide object-oriented programming features.
+- Compilation: TypeScript code needs to be compiled into JavaScript before it can be run in a browser or server. This process converts the TypeScript code into plain JavaScript, which the browser or server can understand.
 
 Next.js detects if your project uses TypeScript and automatically installs the necessary packages and configuration
 
@@ -41,6 +46,24 @@ TSX stands for "TypeScript XML." It's a syntax extension used by TypeScript, whi
 
 # Chapter 2 CSS
 -You can import global.css in any component in your application, but it's usually good practice to add it to your top-level component. In Next.js, this is the root layout
+
+- String-based className="": Use this for simple, static styles that don't require conditional logic. 
+- Object-based className={{}}: Use this for dynamic styles that depend on variables, conditions, or other logic. 
+
+``className={`${inter.className} mb-4 text-xl md:text-2xl`}``
+- backticks (`) are used to create a template literal. embed variables and expressions directly within the string.
+- inter.className variable holds a string of CSS classes applied elsewhere in your component
+- The elements within the template literal (mb-4, text-xl, md:text-2xl) are likely Tailwind CSS class names.
+
+    mb-4: Margin bottom of 4 units.
+
+    text-xl: Text size "xl".
+
+    md:text-2xl: Text size "2xl" for medium-sized screens (md).
+- The resulting string is assigned to the className attribute, combining the styles from inter.className with the additional styles defined in the template literal.
+
+e.g. inter.className has the value `font-bold text-gray-900`. The final className string would be:
+`font-bold text-gray-900 mb-4 text-xl md:text-2xl`
 
 ## Tailwind: a CSS framework
 When you use create-next-app to start a new project, Next.js will ask if you want to use Tailwind. If you select yes, Next.js will automatically install the necessary packages and configure Tailwind in your application.
@@ -89,7 +112,7 @@ Splitting code by routes means that pages become isolated. If a certain page thr
 
 By default, React Server Components are executed on the server, which can improve performance and SEO (Search Engine Optimization).
 
-use the use `client` directive when:
+use the `client` directive when:
 
 •	Using client-side APIs: If your component interacts with the browser's window, document, or other APIs, it needs to run on the client.
 
@@ -102,4 +125,23 @@ e.g. A div element: `<div className="my-container">...</div>`
 
 `clsx`: classnames
 # Chapter 6 Setting Up Your Database
+By connecting your GitHub repository, whenever you push changes to your main branch, Vercel will automatically redeploy your application
+## Create a Postgres database
+On Vercel, create db -> copy secret to .env
 
+run `pnpm i @vercel/postgres` in your terminal to install the `Vercel Postgres SDK`.
+
+`/app/seed/route.ts` Next.js Route Handler. This creates a server-side endpoint that you can access in the browser to start populating your database.
+# 7: Fetching Data
+APIs are an intermediary layer between your application code and database.
+
+you should not query your database directly when fetching data on the client as this would expose your database secrets.
+## Using Server Components to fetch data
+- Server Components support promises, providing a simpler solution for asynchronous tasks like data fetching. You can use `async/await` syntax without reaching out for `useEffect`, `useState` or data fetching libraries.
+- Server Components execute on the server, so you can keep expensive data fetches and logic on the server and only send the result to the client.
+- since Server Components execute on the server, you can query the database directly without an additional API layer.
+
+## Fetching data for the dashboard overview page
+- Named Exports = importing named exports, use curly braces {}.
+- Default Exports = importing a module as a whole, you can use a default import without curly braces.
+- Flexibility: Named imports allow you to import only the specific items you need, resulting in smaller bundle sizes and better code organization.

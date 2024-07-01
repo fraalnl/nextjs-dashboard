@@ -3,9 +3,15 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { inter } from '@/app/ui/fonts';
 import { LatestInvoice } from '@/app/lib/definitions';
+
+// return a promise
 export default async function LatestInvoices({
+  //This is parameter destructuring syntax. The function accepts an object, 
+  //and destructures it to extract the latestInvoices property.
   latestInvoices,
 }: {
+  //function parameter is an object with a property latestInvoices,
+  // which is an array of LatestInvoice objects
   latestInvoices: LatestInvoice[];
 }) {
   return (
